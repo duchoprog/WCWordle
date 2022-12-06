@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import EntryLine from './components/EntryLine';
+import Grid from './components/Grid';
+import Header from './components/Header';
 
 function App() {
+  const [guess, setGuess] = useState("")
+
+  useEffect(() => {
+    
+  document.addEventListener('keydown', handleKeyDown, true)
+ 
+  }, [])
+  
+  const handleKeyDown = (e)=>{
+    let letter = e.key
+    if (letter.charCodeAt(0)<91){
+      console.log(letter, letter.charCodeAt(0));
+    }
+  }
+ 
+ 
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header  />
+      <Grid />
+      <hr />
+      <EntryLine guess={guess} />
+
     </div>
   );
 }
