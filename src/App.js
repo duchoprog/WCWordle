@@ -1,34 +1,40 @@
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import './App.css';
-import EntryLine from './components/EntryLine';
 import Grid from './components/Grid';
 import Header from './components/Header';
+import Keyboard from './components/keyboard/Keyboard';
+import {layout} from './components/keyboard/layout'
+
 
 function App() {
-  const [guess, setGuess] = useState("")
+  const [guess, setGuess] = useState("guess")
 
-  useEffect(() => {
-    
-  document.addEventListener('keydown', handleKeyDown, true)
- 
-  }, [])
+     
   
-  const handleKeyDown = (e)=>{
+  
+  
+  const handleKeyUp = (e)=>{
     let letter = e.key
-    if (letter.charCodeAt(0)<91){
-      console.log(letter, letter.charCodeAt(0));
+    if (/^[a-z]+$/i.test(letter) && letter.length===1){
+      
+      setGuess(guess+letter)
+      console.log(guess+letter)
+    }else if(letter==="Backspace"){
+      console.log("bs")
+      setGuess(guess.slice(0, guess.length-1))
     }
   }
+  document.addEventListener('keyup', handleKeyUp, true)
  
- 
+
 
   return (
     <div className="App">
       <Header  />
       <Grid />
       <hr />
-      <EntryLine guess={guess} />
-
+    <h1>{guess}</h1>
+      <Keyboard layout={layout}/>
     </div>
   );
 }
