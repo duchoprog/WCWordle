@@ -1,6 +1,20 @@
 .letterbox {
     background-color:cornflowerblue;
     border:1px solid rgb(70, 119, 210);
+    border-radius: 0.2rem;
     width:2rem;
     height: 2rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+
+  }
+
+  .green{
+    background-color: green;
+  }
+  .yellow{
+    background-color: yellow;
   }

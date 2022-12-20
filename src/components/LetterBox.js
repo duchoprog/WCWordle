@@ -1,9 +1,9 @@
 import React from 'react'
 import './LetterBox.css'
 
-function LetterBox() {
+function LetterBox(props) {
   return (
-    <div className='letterbox open'></div>
+    <div className={'letterbox open ' + props.color}>{props.letter.toUpperCase()}</div>
   )
 }
 

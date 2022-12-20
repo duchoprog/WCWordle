@@ -5,7 +5,6 @@ import './keyboard.css'
 
 
 const keyboard = ({layout}) => {
-console.log(layout[0].row[0])
   return(
     <div className='keyboard'>
    {   layout.map(

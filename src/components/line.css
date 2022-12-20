@@ -1,9 +1,9 @@
 .line{
     border: 1px solid cornflowerblue;
-    width:11rem;
+    width:11.4rem;
     height: 2.4rem;
     display:flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
