@@ -17,8 +17,26 @@ function App() {
   const [answer, setAnswer] = useState("")
   
   useEffect(() => {
-    setAnswer(Words[Math.floor(Math.random()*Words.length)])
-  }, [])
+      setAnswer(Words[Math.floor(Math.random()*Words.length)])
+    }, [])
+
+  const processLetter = (letter) => {
+      if (/^[a-z A-Z]+$/i.test(letter) && letter.length===1 && guess.length<5) {
+        setGuess(prevGuess=>prevGuess+letter) ;
+        setGuesses ([...guesses, guesses[currentLine].word=setCharAt(guesses[currentLine].word,position,letter)])
+        setPosition (prevPosition=>prevPosition+1)
+    
+      } else if (letter === "Backspace" && guesses[currentLine].word.length>=1 && guess.length>=1) {
+        console.log(guesses[currentLine].word.slice(0,guesses[currentLine].word.length-1 ))
+        
+        setGuesses([...guesses, guesses[currentLine].word = setCharAt(guesses[currentLine].word, position-1," ") ]) ;
+        setGuess(guess.slice(0, guess.length-1))
+        console.log(guesses[currentLine].word)
+        setPosition(prevPosition=>prevPosition-1)
+      } else if (letter === "Enter" && guesses[currentLine].word[4]!==" "){  
+        checkLetters(guesses[currentLine].word.toLowerCase() , answer)  
+        }
+    }
 
 
   const checkLetters = (guess,answer)=>{
@@ -74,23 +92,7 @@ function App() {
   
   const handleKeyUp = (e) => {
     let letter = e.key;
-
-    if (/^[a-z]+$/i.test(letter) && letter.length===1 && guess.length<5) {
-      setGuess(prevGuess=>prevGuess+letter) ;
-      setGuesses ([...guesses, guesses[currentLine].word=setCharAt(guesses[currentLine].word,position,letter)])
-      setPosition (prevPosition=>prevPosition+1)
-  
-    } else if (letter === "Backspace" && guesses[currentLine].word.length>=1 && guess.length>=1) {
-      console.log(guesses[currentLine].word.slice(0,guesses[currentLine].word.length-1 ))
-      
-      setGuesses([...guesses, guesses[currentLine].word = setCharAt(guesses[currentLine].word, position-1," ") ]) ;
-      setGuess(guess.slice(0, guess.length-1))
-      console.log(guesses[currentLine].word)
-      setPosition(prevPosition=>prevPosition-1)
-    }else if(letter === "Enter" && guesses[currentLine].word[4]!==" "){  
-      checkLetters(guesses[currentLine].word, answer)  
-
-      }
+    processLetter(letter)
   };
 
   // Add the handleKeyUp event listener
@@ -110,7 +112,9 @@ function App() {
     <div className="App">
       <Header  />
       <Grid currentLine={currentLine} guesses={guesses} />
-      <Keyboard layout={layout}/>
+      <Keyboard layout={layout} processLetter={processLetter}/>
+      <h3>Guess: {guess}</h3>
+      <h3>Guesses:{guesses[currentLine].word}</h3>
     </div>
   );
 }

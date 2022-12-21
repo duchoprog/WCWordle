@@ -2,8 +2,7 @@ import React from 'react'
 import './kbline.css'
 import Key from './Key'
 
-const KBLine = ({line}) => {
-
+const KBLine = ({line, processLetter}) => {
     
   return (
     <div className='kbLine'>
@@ -11,8 +10,8 @@ const KBLine = ({line}) => {
            line.row.map(
             (letter,i)=>{                
                     return  typeof letter === "string" ? 
-                    <Key value={letter} key={letter} /> 
-                    :<Key value={letter.text} key={letter.text} className={letter.text} />
+                    <Key value={letter} key={letter} processLetter = {processLetter}/> 
+                    :<Key value={letter.text} key={letter.text} className={letter.text} processLetter = {processLetter} />
                 
             }
            )

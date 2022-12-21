@@ -4,13 +4,14 @@ import './keyboard.css'
 
 
 
-const keyboard = ({layout}) => {
+const keyboard = ({layout, processLetter}) => {
+  console.log(processLetter)
   return(
     <div className='keyboard'>
    {   layout.map(
         (line,i)=>{
           return(
-            <KBLine line={line} key={"line"+i}/>
+            <KBLine line={line} key={"line"+i} processLetter={processLetter}  />
           )
 
         }

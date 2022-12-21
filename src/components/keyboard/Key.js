@@ -1,9 +1,9 @@
 import React from 'react'
 import './key.css'
 
-const Key = ({value}) => {
+const Key = ({value, processLetter}) => {
   const handleKeyClick = ()=>{
-    console.log(value);
+    processLetter(value)
   }
   return (
     <div className="key" onClick={handleKeyClick}>{value}</div>
