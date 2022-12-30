@@ -3,7 +3,7 @@ import './LetterBox.css'
 
 function LetterBox(props) {
   return (
-    <div className={'letterbox open ' + props.color}>{props.letter.toUpperCase()}</div>
+    <div className={'letterbox open ' + props.bgcolor}>{props.letter.toUpperCase()}</div>
   )
 }
 

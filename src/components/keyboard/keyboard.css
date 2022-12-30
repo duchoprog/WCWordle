@@ -1,3 +1,13 @@
 .keyboard{
     border:1px solid black
 }
+.gray{
+    background-color:darkgray;
+    color:#333
+}
+.yellow{
+    background-color:yellow
+}
+.green{
+    background-color:green
+}

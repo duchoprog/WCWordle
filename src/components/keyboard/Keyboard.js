@@ -5,13 +5,12 @@ import './keyboard.css'
 
 
 const keyboard = ({layout, processLetter}) => {
-  console.log(processLetter)
   return(
     <div className='keyboard'>
-   {   layout.map(
+      {layout.map(
         (line,i)=>{
           return(
-            <KBLine line={line} key={"line"+i} processLetter={processLetter}  />
+            <KBLine line={line} key={"line"+i} processLetter={processLetter}   />
           )
 
         }

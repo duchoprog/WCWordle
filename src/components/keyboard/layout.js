@@ -1,7 +1,7 @@
 export const layout =[
-    {row:['Q','W','E','R','T','Y','U','I','O','P']},
-    {row:['A','S','D','F','G','H','J','K','L']},
-    {row:['Z','X','C','V','B','N','M']},
-    {row:[{width:3,text:'Enter'},{width:3, text:'Backspace'}]},
+   [{text:'Q', color:""},{text:'W', color:""},{text:'E', color:""},{text:'R', color:""},{text:'T', color:""},{text:'Y', color:""},{text:'U', color:""},{text:'I', color:""},{text:'O', color:""},{text:'P', color:""}],
+    [{text:'A', color:""},{text:'S', color:""},{text:'D', color:""},{text:'F', color:""},{text:'G', color:""},{text:'H', color:""},{text:'J', color:""},{text:'K', color:""},{text:'L', color:""}],
+    [{text:'Z', color:""},{text:'X', color:""},{text:'C', color:""},{text:'V', color:""},{text:'B', color:""},{text:'N', color:""},{text:'M', color:""}],
+    [{width:3,text:'Enter'},{width:3, text:'Backspace'}]
 
 ]

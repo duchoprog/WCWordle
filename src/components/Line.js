@@ -8,7 +8,7 @@ let loadedLine=[]
 
 brokenLine.forEach((letter, index)=>{
   if(!letter){letter=" "}
-  loadedLine.push(<LetterBox key={lineNumber*10+index+1} letter={letter} color={colors[index]}></LetterBox>)
+  loadedLine.push(<LetterBox key={lineNumber*10+index+1} letter={letter} bgcolor={colors[index]}></LetterBox>)
 })
 
   return (

@@ -9,29 +9,50 @@ import { Words } from './constants/words';
 import setCharAt from './utils/SetCharAt';
 
 
-
 function App() {
+  /* const [alreadyUsed, setAlreadyUsed] = useState([]) */
   const [position, setPosition] = useState(0)
   const [guess, setGuess] = useState('');
-  
+  const [kbLayout, setKbLayout] = useState([])
   const [answer, setAnswer] = useState("")
-  
+  const [won, setWon] = useState(false)
+ 
   useEffect(() => {
       setAnswer(Words[Math.floor(Math.random()*Words.length)])
     }, [])
 
+  useEffect(() => {
+    setKbLayout([...layout]) 
+  }, [answer])
+  
+  const updateKeyboard = ((letter, color) => { 
+    let newKbLayout=[...kbLayout]
+    newKbLayout.forEach((line, index)=>{
+      let searchIndex = (line.findIndex(el => el.text===letter))
+      if (searchIndex>=0 && letter>"?"){
+        if(color === "green" || color === "gray"){
+          line.splice(searchIndex,1,{color:color,text:letter})
+        } else if (color==="yellow" && line[searchIndex].color!=="green"){
+          line.splice(searchIndex,1,{color:color,text:letter})  
+        }
+      }
+    })
+  })
   const processLetter = (letter) => {
-      if (/^[a-z A-Z]+$/i.test(letter) && letter.length===1 && guess.length<5) {
+    if (/^[a-z A-Z]+$/i.test(letter) && letter.length===1 && guess.length<5) {
+
         setGuess(prevGuess=>prevGuess+letter) ;
         setGuesses ([...guesses, guesses[currentLine].word=setCharAt(guesses[currentLine].word,position,letter)])
         setPosition (prevPosition=>prevPosition+1)
     
       } else if (letter === "Backspace" && guesses[currentLine].word.length>=1 && guess.length>=1) {
-        console.log(guesses[currentLine].word.slice(0,guesses[currentLine].word.length-1 ))
+
+        for(let j=0; j< answer.length; j++){
+          setGuesses([...guesses, guesses[currentLine].colors[j]=""])
         
+      }
         setGuesses([...guesses, guesses[currentLine].word = setCharAt(guesses[currentLine].word, position-1," ") ]) ;
         setGuess(guess.slice(0, guess.length-1))
-        console.log(guesses[currentLine].word)
         setPosition(prevPosition=>prevPosition-1)
       } else if (letter === "Enter" && guesses[currentLine].word[4]!==" "){  
         checkLetters(guesses[currentLine].word.toLowerCase() , answer)  
@@ -42,7 +63,7 @@ function App() {
   const checkLetters = (guess,answer)=>{
     let localGuess=guess
     let localAnswer=answer
-    let totallyRight=0
+    let absolutelyRight=0
 
 
     if(ValidWords.indexOf(guess)>=0){    
@@ -51,47 +72,61 @@ function App() {
       if(answer[i]===localGuess[i]){
         setGuesses([...guesses, guesses[currentLine].colors[i]="green"])
         localGuess = setCharAt(localGuess,i,"+")
+        updateKeyboard(localAnswer[i].toUpperCase(),"green")
         localAnswer = setCharAt(localAnswer,i,"0")
-        totallyRight +=1
-        if(totallyRight===5){
-          console.log("you won")
+        absolutelyRight +=1
+        if(absolutelyRight===5){
+          for(let w=0;w<5;w++){
+            setGuesses([...guesses, guesses[currentLine].colors[w]="win animate__animated animate__tada"])
+            setWon(true)
+          }          
         }
-        console.log(localAnswer);
       }
     }
       //Check right letter, wrong position
       for(let j=0; j< answer.length; j++){
         if(localAnswer.indexOf(localGuess[j])>=0){
+          updateKeyboard(localGuess[j].toUpperCase(),"yellow")
           localAnswer=setCharAt(localAnswer, localAnswer.indexOf(localGuess[j]),"-")
           setGuesses([...guesses, guesses[currentLine].colors[j]="yellow"])
+          
+        } else {
+          updateKeyboard(localGuess[j].toUpperCase(),"gray") 
         }
       }
     
     setCurrentLine(currentLine=>currentLine+1)
-    setGuess("")
+    if (guess!==answer){setGuess("")}
     setPosition(0)
   } else {
-    console.log(" animate__animated animate__shakeX");
+    for(let j=0; j< answer.length; j++){
+        setGuesses([...guesses, guesses[currentLine].colors[j]="red animate__animated animate__shakeX"])
+      
+    }
+
   }
+  
   }
+  const initialGuesses = [
+    {word:"     ",
+    colors:[]},
+    {word:"     ",
+    colors:[]},
+    {word:"     ",
+    colors:[]},
+    {word:"     ",
+    colors:[]},
+    {word:"     ",
+    colors:[]},
+    {word:"     ",
+    colors:[]},
+  ]
   const [currentLine, setCurrentLine] = useState(0)
- const [guesses, setGuesses] = useState([
-  {word:"     ",
-  colors:[]},
-  {word:"     ",
-  colors:[]},
-  {word:"     ",
-  colors:[]},
-  {word:"     ",
-  colors:[]},
-  {word:"     ",
-  colors:[]},
-  {word:"     ",
-  colors:[]},
- ])
+  const [guesses, setGuesses] = useState(initialGuesses)
   
   const handleKeyUp = (e) => {
     let letter = e.key;
+    if (letter.length===1){letter=letter.toUpperCase()}
     processLetter(letter)
   };
 
@@ -106,15 +141,27 @@ function App() {
     };
   }, [guess]); // Update the effect when the guess state changes
 
-
-
+  const resetGame = ()=>{
+    setAnswer(Words[Math.floor(Math.random()*Words.length)]);
+    setCurrentLine(0);
+    setGuess('');
+    setGuesses(initialGuesses);
+    setPosition(0);
+    let newKbLayout=[...kbLayout]
+    newKbLayout.forEach(line=>{
+      line.forEach(char=>{char.color=''})
+    })
+    setWon(false)
+  }
   return (
     <div className="App">
       <Header  />
       <Grid currentLine={currentLine} guesses={guesses} />
-      <Keyboard layout={layout} processLetter={processLetter}/>
-      <h3>Guess: {guess}</h3>
-      <h3>Guesses:{guesses[currentLine].word}</h3>
+      <Keyboard layout={kbLayout} processLetter={processLetter}/>
+      <h3 className='lost'>{currentLine===6 && won===false?`The answer was: "${answer.toUpperCase()}". Try again?`:''}</h3>
+      <h3 className='won'>{won===true?`You won! Play again?`:''}</h3>
+      {currentLine===6 || won===true ?<button className=" btn btn-outline-warning newGame" onClick={resetGame}>NEW GAME</button>:''}
+      
     </div>
   );
 }

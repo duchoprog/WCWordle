@@ -7,11 +7,11 @@ const KBLine = ({line, processLetter}) => {
   return (
     <div className='kbLine'>
         {
-           line.row.map(
-            (letter,i)=>{                
+           line.map(
+            (letter,i)=>{             
                     return  typeof letter === "string" ? 
-                    <Key value={letter} key={letter} processLetter = {processLetter}/> 
-                    :<Key value={letter.text} key={letter.text} className={letter.text} processLetter = {processLetter} />
+                    <Key value={letter.text} key={letter.text} processLetter = {processLetter} className={letter.text +" "+ letter.color}/> 
+                    :<Key value={letter.text} key={letter.text} className={"key " + letter.text + " " + letter.color} processLetter = {processLetter} /> 
                 
             }
            )
