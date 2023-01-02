@@ -7,10 +7,11 @@ import {layout} from './components/keyboard/layout';
 import { ValidWords } from './constants/validWords';
 import { Words } from './constants/words';
 import setCharAt from './utils/SetCharAt';
+import Modal from "./components/Modal";
 
 
 function App() {
-  /* const [alreadyUsed, setAlreadyUsed] = useState([]) */
+  const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0)
   const [guess, setGuess] = useState('');
   const [kbLayout, setKbLayout] = useState([])
@@ -77,9 +78,11 @@ function App() {
         absolutelyRight +=1
         if(absolutelyRight===5){
           for(let w=0;w<5;w++){
-            setGuesses([...guesses, guesses[currentLine].colors[w]="win animate__animated animate__tada"])
-            setWon(true)
-          }          
+            setGuesses([...guesses, guesses[currentLine].colors[w]="win animate__animated animate__tada"])            
+          }  
+          setWon(true)
+          let stats=localStorage.getItem("Ordle")
+          localStorage.setItem("Ordle", [...stats, currentLine+1])        
         }
       }
     }
@@ -96,6 +99,10 @@ function App() {
       }
     
     setCurrentLine(currentLine=>currentLine+1)
+    if(currentLine===5 && answer!==guess){
+      let stats=localStorage.getItem("Ordle")
+      localStorage.setItem("Ordle", [...stats,7])
+    }
     if (guess!==answer){setGuess("")}
     setPosition(0)
   } else {
@@ -139,13 +146,16 @@ function App() {
       // Remove the handleKeyUp event listener
       document.removeEventListener('keyup', handleKeyUp, true);
     };
+    // eslint-disable-next-line
   }, [guess]); // Update the effect when the guess state changes
 
   const resetGame = ()=>{
     setAnswer(Words[Math.floor(Math.random()*Words.length)]);
     setCurrentLine(0);
     setGuess('');
+    console.log(initialGuesses)
     setGuesses(initialGuesses);
+    console.log(guesses)
     setPosition(0);
     let newKbLayout=[...kbLayout]
     newKbLayout.forEach(line=>{
@@ -155,11 +165,12 @@ function App() {
   }
   return (
     <div className="App">
+      {isOpen && <Modal setIsOpen={setIsOpen} />}
       <Header  />
       <Grid currentLine={currentLine} guesses={guesses} />
       <Keyboard layout={kbLayout} processLetter={processLetter}/>
       <h3 className='lost'>{currentLine===6 && won===false?`The answer was: "${answer.toUpperCase()}". Try again?`:''}</h3>
-      <h3 className='won'>{won===true?`You won! Play again?`:''}</h3>
+      <h3 className='won'>{won===true?`You won in ${currentLine} guesses! Play again?`:''}</h3>
       {currentLine===6 || won===true ?<button className=" btn btn-outline-warning newGame" onClick={resetGame}>NEW GAME</button>:''}
       
     </div>
