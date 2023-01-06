@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import './App.css';
+import { useState, useEffect } from 'react';
 import Grid from './components/Grid';
 import Header from './components/Header';
 import Keyboard from './components/keyboard/Keyboard';
@@ -17,7 +17,12 @@ function App() {
   const [kbLayout, setKbLayout] = useState([])
   const [answer, setAnswer] = useState("")
   const [won, setWon] = useState(false)
- 
+  
+  if(!localStorage.getItem("Ordle")){
+    let array=[]
+    localStorage.setItem("Ordle",JSON.stringify(array))
+  }
+
   useEffect(() => {
       setAnswer(Words[Math.floor(Math.random()*Words.length)])
     }, [])
@@ -81,8 +86,9 @@ function App() {
             setGuesses([...guesses, guesses[currentLine].colors[w]="win animate__animated animate__tada"])            
           }  
           setWon(true)
-          let stats=localStorage.getItem("Ordle")
-          localStorage.setItem("Ordle", [...stats, currentLine+1])        
+          let stats= JSON.parse(localStorage.getItem("Ordle"))
+          let newOrdle= [...stats, currentLine+1]  
+          localStorage.setItem("Ordle", JSON.stringify(newOrdle))     
         }
       }
     }
@@ -153,9 +159,7 @@ function App() {
     setAnswer(Words[Math.floor(Math.random()*Words.length)]);
     setCurrentLine(0);
     setGuess('');
-    console.log(initialGuesses)
     setGuesses(initialGuesses);
-    console.log(guesses)
     setPosition(0);
     let newKbLayout=[...kbLayout]
     newKbLayout.forEach(line=>{
@@ -166,12 +170,12 @@ function App() {
   return (
     <div className="App">
       {isOpen && <Modal setIsOpen={setIsOpen} />}
-      <Header  />
+      <Header setIsOpen={setIsOpen} />
       <Grid currentLine={currentLine} guesses={guesses} />
-      <Keyboard layout={kbLayout} processLetter={processLetter}/>
+      
       <h3 className='lost'>{currentLine===6 && won===false?`The answer was: "${answer.toUpperCase()}". Try again?`:''}</h3>
       <h3 className='won'>{won===true?`You won in ${currentLine} guesses! Play again?`:''}</h3>
-      {currentLine===6 || won===true ?<button className=" btn btn-outline-warning newGame" onClick={resetGame}>NEW GAME</button>:''}
+      {currentLine===6 || won===true ?<button className=" btn btn-outline-warning newGame" onClick={resetGame}>NEW GAME</button>:<Keyboard layout={kbLayout} processLetter={processLetter}/>}
       
     </div>
   );

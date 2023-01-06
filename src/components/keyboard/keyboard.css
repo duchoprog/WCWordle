@@ -1,9 +1,11 @@
 .keyboard{
-    border:1px solid black
+    background-color: #11111122;
+    border:1px solid #11111133;
+    border-radius: 0.3rem;
 }
 .gray{
-    background-color:darkgray;
-    color:#333
+    background-color:#343;
+    color:#232
 }
 .yellow{
     background-color:yellow
