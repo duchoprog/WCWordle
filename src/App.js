@@ -8,6 +8,7 @@ import { ValidWords } from './constants/validWords';
 import { Words } from './constants/words';
 import setCharAt from './utils/SetCharAt';
 import Modal from "./components/Modal";
+import InfoModal from './components/InfoModal';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const [kbLayout, setKbLayout] = useState([])
   const [answer, setAnswer] = useState("")
   const [won, setWon] = useState(false)
+  const [infoIsOpen, setInfoIsOpen] = useState(false)
   
   if(!localStorage.getItem("Ordle")){
     let array=[]
@@ -170,7 +172,8 @@ function App() {
   return (
     <div className="App">
       {isOpen && <Modal setIsOpen={setIsOpen} />}
-      <Header setIsOpen={setIsOpen} />
+      {infoIsOpen && <InfoModal setInfoIsOpen={setInfoIsOpen} />}
+      <Header setIsOpen={setIsOpen} setInfoIsOpen={setInfoIsOpen} />
       <Grid currentLine={currentLine} guesses={guesses} />
       
       <h3 className='lost'>{currentLine===6 && won===false?`The answer was: "${answer.toUpperCase()}". Try again?`:''}</h3>
