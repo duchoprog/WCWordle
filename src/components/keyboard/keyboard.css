@@ -1,15 +1,16 @@
 .keyboard{
-    background-color: #11111122;
-    border:1px solid #11111133;
+    background-color: #11111111;
+    border:1px solid #11111122;
     border-radius: 0.3rem;
+    padding:0.1rem
 }
 .gray{
-    background-color:#343;
+    background-color:#676;
     color:#232
 }
 .yellow{
     background-color:yellow
 }
 .green{
-    background-color:green
+    background-color:#2b2
 }

@@ -1,6 +1,5 @@
 .letterbox {
-    background-color:cornflowerblue;
-    border:1px solid rgb(70, 119, 210);
+    border:1px solid rgba(0, 1, 2, 0.337);
     border-radius: 0.2rem;
     width:3rem;
     height: 3rem;

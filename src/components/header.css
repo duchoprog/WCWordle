@@ -1,6 +1,15 @@
 .header{
-    background-color: black;
-    color:cornflowerblue;
+    background-color: white;
+    color:black;
     width:100%;
     margin-bottom: 1rem;
+    padding-top: 0.5rem;
+}
+
+h1{
+    font-weight: 700;
+}
+
+.statsIcon{
+    font-size: x-large;
 }
