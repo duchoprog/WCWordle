@@ -62,7 +62,7 @@ function App() {
         setGuesses([...guesses, guesses[currentLine].word = setCharAt(guesses[currentLine].word, position-1," ") ]) ;
         setGuess(guess.slice(0, guess.length-1))
         setPosition(prevPosition=>prevPosition-1)
-      } else if (letter === "Enter" && guesses[currentLine].word[4]!==" "){  
+      } else if ((letter === "Send" || letter === "Enter") && guesses[currentLine].word[4]!==" "){  
         checkLetters(guesses[currentLine].word.toLowerCase() , answer)  
         }
     }
