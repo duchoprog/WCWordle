@@ -7,11 +7,12 @@ import {layout} from './components/keyboard/layout';
 import { ValidWords } from './constants/validWords';
 import { Words } from './constants/words';
 import setCharAt from './utils/SetCharAt';
+import getTeams from './utils/API-football';
 import Modal from "./components/Modal";
 import InfoModal from './components/InfoModal';
 
 
-function App() {
+function App() {  
   const [isOpen, setIsOpen] = useState(false);
   const [position, setPosition] = useState(0)
   const [guess, setGuess] = useState('');
@@ -20,6 +21,7 @@ function App() {
   const [won, setWon] = useState(false)
   const [infoIsOpen, setInfoIsOpen] = useState(false)
   
+  
   if(!localStorage.getItem("Ordle")){
     let array=[]
     localStorage.setItem("Ordle",JSON.stringify(array))
@@ -27,6 +29,7 @@ function App() {
 
   useEffect(() => {
       setAnswer(Words[Math.floor(Math.random()*Words.length)])
+      getTeams()
     }, [])
 
   useEffect(() => {
@@ -46,6 +49,11 @@ function App() {
       }
     })
   })
+
+  const resetStats = () =>{
+    localStorage.removeItem("Ordle")    
+  }
+
   const processLetter = (letter) => {
     if (/^[a-z A-Z]+$/i.test(letter) && letter.length===1 && guess.length<5) {
 
@@ -62,7 +70,7 @@ function App() {
         setGuesses([...guesses, guesses[currentLine].word = setCharAt(guesses[currentLine].word, position-1," ") ]) ;
         setGuess(guess.slice(0, guess.length-1))
         setPosition(prevPosition=>prevPosition-1)
-      } else if ((letter === "Send" || letter === "Enter") && guesses[currentLine].word[4]!==" "){  
+      } else if ((letter === "Send" || letter === "Enter") && guesses[currentLine].word[4]!==" " && won===false){  
         checkLetters(guesses[currentLine].word.toLowerCase() , answer)  
         }
     }
@@ -108,8 +116,9 @@ function App() {
     
     setCurrentLine(currentLine=>currentLine+1)
     if(currentLine===5 && answer!==guess){
-      let stats=localStorage.getItem("Ordle")
-      localStorage.setItem("Ordle", [...stats,7])
+      let stats= JSON.parse(localStorage.getItem("Ordle"))
+      let newOrdle= [...stats, 7]  
+      localStorage.setItem("Ordle", JSON.stringify(newOrdle))  
     }
     if (guess!==answer){setGuess("")}
     setPosition(0)
@@ -118,9 +127,8 @@ function App() {
         setGuesses([...guesses, guesses[currentLine].colors[j]="red animate__animated animate__shakeX"])
       
     }
-
+//TODO
   }
-  
   }
   const initialGuesses = [
     {word:"     ",
@@ -171,7 +179,7 @@ function App() {
   }
   return (
     <div className="App">
-      {isOpen && <Modal setIsOpen={setIsOpen} />}
+      {isOpen && <Modal setIsOpen={setIsOpen} resetStats= {resetStats} />}
       {infoIsOpen && <InfoModal setInfoIsOpen={setInfoIsOpen} />}
       <Header setIsOpen={setIsOpen} setInfoIsOpen={setInfoIsOpen} />
       <Grid currentLine={currentLine} guesses={guesses} />

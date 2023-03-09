@@ -3,7 +3,7 @@ import styles from "./Modal.module.css";
 import computeStats from '../utils/ComputeStats';
 import { BarChart, Bar,  XAxis, YAxis, CartesianGrid,   ResponsiveContainer } from 'recharts';
 
-const Modal = ({setIsOpen}) => {
+const Modal = ({setIsOpen, resetStats}) => {
   let   maxData = 0;
   let stats  = JSON.parse(localStorage.getItem("Ordle"))
   let computedStats=computeStats(stats)
@@ -25,7 +25,7 @@ const Modal = ({setIsOpen}) => {
                     <button className={styles.closeBtn} onClick={() => setIsOpen(false)}>
                         <h3 style={{ marginBottom: "-3px" }}> X </h3>
                     </button>
-                    <ResponsiveContainer width="100%" height="100%">
+                    <ResponsiveContainer width="100%" height="85%">
                         <BarChart
                         width={600}
                         height={500}
@@ -43,6 +43,7 @@ const Modal = ({setIsOpen}) => {
                         <Bar dataKey="guesses" fill="#8884d8" />
                         </BarChart>
                     </ResponsiveContainer>
+                <button id={styles.reset} onClick={resetStats}>Reset stats</button>
                 </div>
             </div>    
         </div>
