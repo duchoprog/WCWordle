@@ -17,7 +17,7 @@ function InfoModal({setInfoIsOpen}) {
                     <div className={styles.info}>
                         <p>Try to guess the 5 letter ANSWER</p>
                         <p>Type a 5 letter word, and press send.</p>
-                        <p>Letters that turn yellow are used in the ANSWER, but are on a wrong position.</p>
+                        <p>Letters that turn yellow are used in the ANSWER, but are in the wrong position.</p>
                         <p>Letters that turn green are used in the ANSWER, and are in the right position.</p>
                         <p>Good luck!</p>
                     </div>
