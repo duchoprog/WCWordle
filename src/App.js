@@ -5,9 +5,9 @@ import Header from './components/Header';
 import Keyboard from './components/keyboard/Keyboard';
 import {layout} from './components/keyboard/layout';
 import { ValidWords } from './constants/validWords';
-import { Words } from './constants/words';
+import { WCPlayers } from './constants/WCPlayers';
+//import { Words } from './constants/words';
 import setCharAt from './utils/SetCharAt';
-import getTeams from './utils/API-football';
 import Modal from "./components/Modal";
 import InfoModal from './components/InfoModal';
 
@@ -20,6 +20,10 @@ function App() {
   const [answer, setAnswer] = useState("")
   const [won, setWon] = useState(false)
   const [infoIsOpen, setInfoIsOpen] = useState(false)
+
+  const Words = WCPlayers
+  ValidWords.push(...Words)
+
   
   
   if(!localStorage.getItem("Ordle")){
@@ -29,7 +33,6 @@ function App() {
 
   useEffect(() => {
       setAnswer(Words[Math.floor(Math.random()*Words.length)])
-      getTeams()
     }, [])
 
   useEffect(() => {
