@@ -36,7 +36,6 @@ export const WCPlayers = [
  'seidu', 
  'kudus', 
  'samed', 
- 'mæhle', 
  'olsen', 
  'bronn', 
  'talbi', 
